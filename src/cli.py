@@ -1,5 +1,6 @@
 import sys
-from typing import Any
+from typing import Any, Annotated
+import shlex
 
 import typer
 
@@ -83,16 +84,23 @@ def print_array(arr: list[Any], max_display: int = 20) -> None:
 @sort_app.command('bubble')
 def sort_bubble(
     test_type: str,
-    n: int | None = None,
-    low: int | None = None,
-    high: int | None = None,
-    distinct: bool = False,
-    seed: int | None = None,
-    k_unique: int = 5,
-    swaps: int = 5,
-    custom: str | None = None,
+    n: Annotated[int | None, typer.Argument()] = None,
+    low: Annotated[int | None, typer.Argument()] = None,
+    high: Annotated[int | None, typer.Argument()] = None,
+    distinct: Annotated[bool, typer.Option('--distinct')] = False,
+    seed: Annotated[int | None, typer.Option('--seed')] = None,
+    k_unique: Annotated[int, typer.Option('--k-unique')] = 5,
+    swaps: Annotated[int, typer.Option('--swaps')] = 5,
+    custom: Annotated[str | None, typer.Option('--custom')] = None,
 ) -> None:
-    """Сортировка пузырьком."""
+    """
+    Сортировка пузырьком.
+    
+    Примеры:
+        sort bubble rand_int 20 1 100
+        sort bubble rand_int 15 -50 50 --distinct --seed 42
+        sort bubble custom --custom "5,2,8,1,9"
+    """
     arr = generate_test_array(
         test_type, n, low, high, distinct, seed, k_unique, swaps, custom
     )
@@ -107,16 +115,22 @@ def sort_bubble(
 @sort_app.command('quick')
 def sort_quick(
     test_type: str,
-    n: int | None = None,
-    low: int | None = None,
-    high: int | None = None,
-    distinct: bool = False,
-    seed: int | None = None,
-    k_unique: int = 5,
-    swaps: int = 5,
-    custom: str | None = None,
+    n: Annotated[int | None, typer.Argument()] = None,
+    low: Annotated[int | None, typer.Argument()] = None,
+    high: Annotated[int | None, typer.Argument()] = None,
+    distinct: Annotated[bool, typer.Option('--distinct')] = False,
+    seed: Annotated[int | None, typer.Option('--seed')] = None,
+    k_unique: Annotated[int, typer.Option('--k-unique')] = 5,
+    swaps: Annotated[int, typer.Option('--swaps')] = 5,
+    custom: Annotated[str | None, typer.Option('--custom')] = None,
 ) -> None:
-    """Быстрая сортировка."""
+    """
+    Быстрая сортировка.
+    
+    Примеры:
+        sort quick rand_int 20 1 100
+        sort quick nearly_sorted 30 --swaps 5 --seed 42
+    """
     arr = generate_test_array(
         test_type, n, low, high, distinct, seed, k_unique, swaps, custom
     )
@@ -131,16 +145,22 @@ def sort_quick(
 @sort_app.command('heap')
 def sort_heap(
     test_type: str,
-    n: int | None = None,
-    low: int | None = None,
-    high: int | None = None,
-    distinct: bool = False,
-    seed: int | None = None,
-    k_unique: int = 5,
-    swaps: int = 5,
-    custom: str | None = None,
+    n: Annotated[int | None, typer.Argument()] = None,
+    low: Annotated[int | None, typer.Argument()] = None,
+    high: Annotated[int | None, typer.Argument()] = None,
+    distinct: Annotated[bool, typer.Option('--distinct')] = False,
+    seed: Annotated[int | None, typer.Option('--seed')] = None,
+    k_unique: Annotated[int, typer.Option('--k-unique')] = 5,
+    swaps: Annotated[int, typer.Option('--swaps')] = 5,
+    custom: Annotated[str | None, typer.Option('--custom')] = None,
 ) -> None:
-    """Пирамидальная сортировка."""
+    """
+    Пирамидальная сортировка.
+    
+    Примеры:
+        sort heap rand_int 20 1 100
+        sort heap reverse_sorted 25 -100 100
+    """
     arr = generate_test_array(
         test_type, n, low, high, distinct, seed, k_unique, swaps, custom
     )
@@ -155,16 +175,22 @@ def sort_heap(
 @sort_app.command('counting')
 def sort_counting(
     test_type: str,
-    n: int | None = None,
-    low: int | None = None,
-    high: int | None = None,
-    distinct: bool = False,
-    seed: int | None = None,
-    k_unique: int = 5,
-    swaps: int = 5,
-    custom: str | None = None,
+    n: Annotated[int | None, typer.Argument()] = None,
+    low: Annotated[int | None, typer.Argument()] = None,
+    high: Annotated[int | None, typer.Argument()] = None,
+    distinct: Annotated[bool, typer.Option('--distinct')] = False,
+    seed: Annotated[int | None, typer.Option('--seed')] = None,
+    k_unique: Annotated[int, typer.Option('--k-unique')] = 5,
+    swaps: Annotated[int, typer.Option('--swaps')] = 5,
+    custom: Annotated[str | None, typer.Option('--custom')] = None,
 ) -> None:
-    """Сортировка подсчётом."""
+    """
+    Сортировка подсчётом.
+    
+    Примеры:
+        sort counting rand_int 50 1 100
+        sort counting many_duplicates 50 --k-unique 5
+    """
     arr = generate_test_array(
         test_type, n, low, high, distinct, seed, k_unique, swaps, custom
     )
@@ -179,13 +205,20 @@ def sort_counting(
 @sort_app.command('bucket')
 def sort_bucket(
     test_type: str,
-    n: int | None = None,
-    low: float | None = None,
-    high: float | None = None,
-    seed: int | None = None,
-    custom: str | None = None,
+    n: Annotated[int | None, typer.Argument()] = None,
+    low: Annotated[float | None, typer.Argument()] = None,
+    high: Annotated[float | None, typer.Argument()] = None,
+    seed: Annotated[int | None, typer.Option('--seed')] = None,
+    custom: Annotated[str | None, typer.Option('--custom')] = None,
 ) -> None:
-    """Блочная сортировка (для вещественных чисел)."""
+    """
+    Блочная сортировка (для вещественных чисел).
+    
+    Примеры:
+        sort bucket rand_float 30 0.0 1.0
+        sort bucket rand_float 30 0.0 1.0 --seed 42
+        sort bucket custom --custom "1.5,2.3,0.8"
+    """
     if test_type == 'rand_float':
         arr = rand_float_array(n, low or 0.0, high or 1.0, seed)
     elif test_type == 'custom' and custom:
@@ -204,11 +237,16 @@ def sort_bucket(
 @sort_app.command('radix')
 def sort_radix(
     test_type: str,
-    n: int | None = None,
-    base: int = 10,
-    custom: str | None = None,
+    base: Annotated[int, typer.Option('--base')] = 10,
+    custom: Annotated[str | None, typer.Option('--custom')] = None,
 ) -> None:
-    """Поразрядная сортировка (для строк)."""
+    """
+    Поразрядная сортировка (для строк).
+    
+    Примеры:
+        sort radix custom --custom "123,45,789"
+        sort radix custom --custom "ABC,ZZ,AAA" --base 36
+    """
     if test_type == 'custom' and custom:
         arr = [x.strip() for x in custom.split(',')]
     else:
@@ -224,24 +262,20 @@ def generate_test_array(
     test_type, n, low, high, distinct, seed, k_unique, swaps, custom
 ) -> None | list[Any]:
     """Генерирует тестовый массив."""
-    try:
-        if test_type == 'rand_int':
-            return rand_int_array(n, low, high, distinct, seed)
-        elif test_type == 'rand_float':
-            return rand_float_array(n, low or 0.0, high or 1.0, seed)
-        elif test_type == 'reverse_sorted':
-            return reverse_sorted(n, low or -100, high or 100)
-        elif test_type == 'many_duplicates':
-            return many_duplicates(n, k_unique, seed)
-        elif test_type == 'nearly_sorted':
-            return nearly_sorted(n, swaps, seed)
-        elif test_type == 'custom' and custom:
-            return [int(x.strip()) for x in custom.split(',')]
-        else:
-            typer.echo(f'Неизвестный тип test_case: {test_type}')
-            return None
-    except Exception as e:
-        typer.echo(f'Ошибка генерации массива: {e}', err=True)
+    if test_type == 'rand_int':
+        return rand_int_array(n, low, high, distinct, seed)
+    elif test_type == 'rand_float':
+        return rand_float_array(n, low or 0.0, high or 1.0, seed)
+    elif test_type == 'reverse_sorted':
+        return reverse_sorted(n, low or -100, high or 100)
+    elif test_type == 'many_duplicates':
+        return many_duplicates(n, k_unique, seed)
+    elif test_type == 'nearly_sorted':
+        return nearly_sorted(n, swaps, seed)
+    elif test_type == 'custom' and custom:
+        return [int(x.strip()) for x in custom.split(',')]
+    else:
+        typer.echo(f'Неизвестный тип test_case: {test_type}')
         return None
 
 
@@ -260,29 +294,20 @@ def stack_push(value: int) -> None:
 @stack_app.command('pop')
 def stack_pop() -> None:
     """Удалить элемент из стека."""
-    try:
-        value = stack.pop()
-        typer.echo(f'Удалено: {value}')
-    except ValueError as e:
-        typer.echo(f'Ошибка: {e}', err=True)
+    value = stack.pop()
+    typer.echo(f'Удалено: {value}')
 
 
 @stack_app.command('peek')
 def stack_peek() -> None:
     """Посмотреть верхний элемент."""
-    try:
-        typer.echo(f'Верхний элемент: {stack.peek()}')
-    except ValueError as e:
-        typer.echo(f'Ошибка: {e}', err=True)
+    typer.echo(f'Верхний элемент: {stack.peek()}')
 
 
 @stack_app.command('min')
 def stack_min() -> None:
     """Получить минимальный элемент."""
-    try:
-        typer.echo(f'Минимум: {stack.min()}')
-    except ValueError as e:
-        typer.echo(f'Ошибка: {e}', err=True)
+    typer.echo(f'Минимум: {stack.min()}')
 
 
 @stack_app.command('length')
@@ -312,20 +337,14 @@ def queue_enqueue(value: int) -> None:
 @queue_app.command('dequeue')
 def queue_dequeue() -> None:
     """Удалить элемент из очереди."""
-    try:
-        value = queue.dequeue()
-        typer.echo(f'Удалено: {value}')
-    except ValueError as e:
-        typer.echo(f'Ошибка: {e}', err=True)
+    value = queue.dequeue()
+    typer.echo(f'Удалено: {value}')
 
 
 @queue_app.command('front')
 def queue_front() -> None:
     """Посмотреть первый элемент."""
-    try:
-        typer.echo(f'Первый элемент: {queue.front()}')
-    except ValueError as e:
-        typer.echo(f'Ошибка: {e}', err=True)
+    typer.echo(f'Первый элемент: {queue.front()}')
 
 
 @queue_app.command('length')
@@ -340,77 +359,74 @@ def queue_is_empty() -> None:
     typer.echo(f'Пуста: {queue.is_empty()}')
 
 
-# INTERACTIVE
-def interactive_mode() -> None:
-    """Запускает интерактивный режим для построчного ввода команд."""
-    typer.echo('=== CLI для работы с алгоритмами ===')
-    typer.echo(
-        'Вводите команды построчно.',
-        " Введите 'exit' или нажмите Ctrl+D для выхода.",
-    )
-    typer.echo("Введите 'help' для справки.")
-    typer.echo()
-
-    try:
-        for line in sys.stdin:
-            line = line.strip()
-
-            if not line:
-                continue
-
-            if line.lower() in ['exit', 'quit']:
-                typer.echo('Выход из программы.')
-                break
-
-            if line.lower() == 'help':
-                typer.echo("""
+def show_help() -> None:
+    """Показывает справку по командам."""
+    typer.echo("""
 Доступные команды:
-  fibonachi default <n>              - Вычислить число Фибоначчи итеративно
-  fibonachi recursive <n>            - Вычислить число Фибоначчи рекурсивно
-  factorial default <n>              - Вычислить факториал итеративно
-  factorial recursive <n>            - Вычислить факториал рекурсивно
-  
-  sort <algorithm> <test_type> [options]
-    algorithm: bubble, quick, heap, counting, bucket, radix
-    test_type: rand_int, rand_float, reverse_sorted, 
-                           many_duplicates, nearly_sorted, custom 
-    
-  stack push <value>                 - Добавить в стек
-  stack pop                          - Удалить из стека
-  stack peek                         - Посмотреть верхний элемент
-  stack min                          - Минимальный элемент
-  stack length                       - Размер стека
-  stack is-empty                     - Проверить, пуст ли стек
-  
-  queue enqueue <value>              - Добавить в очередь
-  queue dequeue                      - Удалить из очереди
-  queue front                        - Посмотреть первый элемент
-  queue length                       - Размер очереди
-  queue is-empty                     - Проверить, пуста ли очередь
-  
-  exit / quit                        - Выход
-  help                               - Эта справка
-                """)
-                continue
 
-            old_argv = sys.argv
-            try:
-                sys.argv = ['cli'] + line.split()
-                app(standalone_mode=False)
-            except SystemExit:
-                pass
-            except Exception as e:
-                typer.echo(f'Ошибка: {e}', err=True)
-            finally:
-                sys.argv = old_argv
+=== Математические функции ===
+  fibonachi default <n>              - Число Фибоначчи итеративно
+  fibonachi recursive <n>            - Число Фибоначчи рекурсивно
+  factorial default <n>              - Факториал итеративно
+  factorial recursive <n>            - Факториал рекурсивно
 
-    except (KeyboardInterrupt, EOFError):
-        typer.echo('\nВыход из программы.')
+=== Сортировка ===
+  sort <algorithm> <test_type> [аргументы] [опции]
+  
+  Алгоритмы: bubble, quick, heap, counting, bucket, radix
+  
+  Типы тестовых данных:
+  
+  1. rand_int <n> <low> <high> [--distinct] [--seed <число>]
+     Примеры:
+       sort quick rand_int 20 1 100
+       sort bubble rand_int 15 -50 50 --distinct --seed 42
+  
+  2. rand_float <n> <low> <high> [--seed <число>] (только bucket)
+     Пример:
+       sort bucket rand_float 30 0.0 1.0 --seed 42
+  
+  3. reverse_sorted <n> [<low> <high>]
+     Примеры:
+       sort heap reverse_sorted 25
+       sort heap reverse_sorted 25 -100 100
+  
+  4. many_duplicates <n> [--k-unique <число>] [--seed <число>]
+     Примеры:
+       sort counting many_duplicates 50
+       sort counting many_duplicates 50 --k-unique 10 --seed 42
+  
+  5. nearly_sorted <n> [--swaps <число>] [--seed <число>]
+     Примеры:
+       sort quick nearly_sorted 30
+       sort quick nearly_sorted 30 --swaps 5 --seed 42
+  
+  6. custom --custom "элементы,через,запятую"
+     Примеры:
+       sort bubble custom --custom "5,2,8,1,9"
+       sort radix custom --custom "123,45,789" --base 10
+
+=== Стек ===
+  stack push <value>      - Добавить элемент
+  stack pop               - Удалить элемент
+  stack peek              - Показать верхний элемент
+  stack min               - Минимальный элемент
+  stack length            - Размер стека
+  stack is-empty          - Проверить пустоту
+
+=== Очередь ===
+  queue enqueue <value>   - Добавить элемент
+  queue dequeue           - Удалить элемент
+  queue front             - Показать первый элемент
+  queue length            - Размер очереди
+  queue is-empty          - Проверить пустоту
+
+=== Управление ===
+  exit / quit             - Выход
+  help                    - Эта справка
+    """)
 
 
 def cli() -> None:
     """Главная функция CLI."""
-    if len(sys.argv) == 1:
-        interactive_mode()
-    else:
-        app()
+    app()

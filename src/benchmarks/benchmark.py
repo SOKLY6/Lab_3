@@ -1,6 +1,7 @@
 import functools
 import time
 from typing import Any, Callable
+from logger.logger_setup import logger
 
 
 def benchmark(function: Callable) -> Callable:
@@ -22,7 +23,10 @@ def benchmark(function: Callable) -> Callable:
         time_result = time_end - time_start
         print(
             f'Выполнение команды {function.__name__}',
-            f' заняло: {time_result * 1000:.3f}мс',
+            f' заняло: {time_result * 1000:.3f}мс'
+        )
+        logger.info(
+            f'Команда {function.__name__} выполнена'
         )
         return result
 

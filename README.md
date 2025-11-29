@@ -41,11 +41,15 @@
 Автоматическое измерение времени выполнения всех операций с выводом в миллисекундах.
 
 ## Установка
-```git clone https://github.com/SOKLY6/Lab_3.git
-cd Lab_3```
+```
+git clone https://github.com/SOKLY6/Lab_3.git
+cd Lab_3
+```
 
 ### Установка зависимостей
-```pip install uv
+```
+pip install uv
 uv venv
 source .venv/bin/activate
-uv sync```
+uv sync
+```
